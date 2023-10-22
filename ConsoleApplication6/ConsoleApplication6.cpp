@@ -1,236 +1,565 @@
-#include <iostream> 
-#include <string> 
-#include <ctime> 
-#include <Windows.h> 
+#include <iostream>
 using namespace std;
 
-
-class Human {
-	double height;
-	string eyes_color;
-	string name;
-	string last_name;
-	int energy;
-	bool soreThroat;
-	int cleanliness;
-	int mood;
-	int hunger;// 0 - full; 100 - hungry;
-
-
+class DateTime
+{
+    int day;
+    int month;
+    int year;
 
 public:
-	Human()
-	{
-		cout << " without parameters!\n";
-		SetHeight(167);
-		SetEyes_color("brown");
-		SetName("Max");
-		SetLastName("Smith");
-		SetEnergy(100);
-		SetSoreThroat(1);
-		SetCleanliness(100);
-		SetMood(100);
-		SetHunger(100);
-	}
+    void SetDay(int day)
+    {
+        if (day > 0 && day <= 31) // TO DO: february 28-29, april june 30
+        {
+            this->day = day;
+        }
+        else
+        {
+            cout << "Invalid value!" << endl;
+            throw "ERROR!\n";
+        }
+    }
 
-	Human(double height, string eyes_color)
-	{
-		cout << "WITH parameters!\n";
-		SetHeight(height);
-		SetEyes_color(eyes_color);
-		SetName("Max");
-		SetLastName("Smith");
-		SetEnergy(100);
-		SetSoreThroat(1);
-		SetCleanliness(100);
-		SetMood(100);
-		SetHunger(100);
-	}
+    int GetDay() const
+    {
+        return day;
+    }
 
+    void SetMonth(int month)
+    {
+        if (month >= 1 && month <= 12)
+        {
+            this->month = month;
+        }
+        else
+        {
+            cout << "Invalid value!" << endl;
+            throw "ERROR!\n";
+        }
+    }
 
-	void SetHeight(double height) {
-		if (height < 0 || height > 300) {
-			cout << "Wrong input!\n";
-		}
-		else {
-			this->height = height;
-		}
-	}
+    int GetMonth() const
+    {
+        return month;
+    }
 
-	double GetHeight() const {
-		return this->height;
-	}
+    void SetYear(int year)
+    {
+        this->year = year;
+    }
 
-	void SetEyes_color(string eyes_color) {
-		this->eyes_color = eyes_color;
-	}
+    int GetYear() const
+    {
+        return year;
+    }
 
-	string GetEyes_color() const {
-		return this->eyes_color;
-	}
+    DateTime() {
+        //cout << "DateTime c-tor without parameters\n";
+        SetDay(11);
+        SetMonth(10);
+        SetYear(2023);
+    }
 
-	void SetName(string name) {
-		this->name = name;
-	}
+    DateTime(int day, int month) {
+        //cout << "DateTime c-tor with 2 parameters\n";
+        SetDay(day);
+        SetMonth(month);
+        SetYear(2023);
+    }
 
-	string GetName() const {
-		return this->name;
-	}
+    DateTime(int day, int month, int year)
+    {
+        //cout << "DateTime main c-tor with 3 parameters\n";
+        SetDay(day);
+        SetMonth(month);
+        SetYear(year);
+    }
 
-	void SetLastName(string last_name) {
-		this->last_name = last_name;
-	}
+    DateTime(const DateTime& original)
+    {
+        //cout << "DateTime copy constructor\n";
+        this->day = original.day;
+        this->month = original.month;
+        this->year = original.year;
+    }
 
-	string GetLastName() const {
-		return this->last_name;
-	}
+    ~DateTime() {
+        //cout << "DateTime destructor\n";
+    }
 
-	void SetEnergy(int energy) {
-		if (energy < 0 || energy>100) {
-			cout << "Wrong input!\n";
-		}
-		else {
-			this->energy = energy;
-		}
-	}
-
-	int GetEnergy() const {
-		return this->energy;
-	}
-
-	void SetSoreThroat(bool soreThroat) {
-		this->soreThroat = soreThroat;
-	}
-
-	bool GetSoreThroat() const {
-		return this->soreThroat;
-	}
-
-	void SetCleanliness(int cleanliness) {
-		if (cleanliness < 0 || cleanliness>100) {
-			cout << "Wrong input!\n";
-		}
-		else {
-			this->cleanliness = cleanliness;
-		}
-	}
-
-	int GetCleanliness() const {
-		return this->cleanliness;
-	}
-
-	void SetMood(int mood) {
-		if (mood < 0 || mood>100) {
-			cout << "Wrong input!\n";
-		}
-		else {
-			this->mood = mood;
-		}
-	}
-
-	int GetMood() const {
-		return this->mood;
-	}
-
-	void SetHunger(int hunger) {
-		if (hunger < 0 || hunger>100) {
-			cout << "Wrong input!\n";
-		}
-		else {
-			this->hunger = hunger;
-		}
-	}
-
-	int SetHunger() const {
-		return this->hunger;
-	}
-
-	void speaking() {
-		if (soreThroat) {
-			cout << name << " has a sore throat! " << name << " can't speak!\n";
-			return;
-		}
-		cout << name << " " << last_name << " is talking!\n";
-		energy -= 10;
-	}
-
-	void eating() {
-		if (hunger > 80) {
-			cout << name << " is full!\n";
-			return;
-		}
-		cout << name << " " << last_name << " is eating!\n";
-		hunger += 30;
-	}
-
-	void dancing() {
-		if (energy < 30) {
-			cout << name << " is tired!\n";
-			return;
-		}
-		cout << name << " " << last_name << " is dancing!\n";
-		energy -= 30;
-		mood += 30;
-		cleanliness -= 20;
-	}
-
-	void washing() {
-		if (cleanliness > 50) {
-			cout << name << " is clean!\n";
-			return;
-		}
-		cout << name << " " << last_name << " is in a shower!\n";
-		cleanliness += 50;
-		mood += 10;
-	}
-
-	void resting() {
-		if (energy > 80) {
-			cout << name << " is not tired!\n";
-			return;
-		}
-		cout << name << " " << last_name << " is resting!\n";
-		energy += 30;
-		mood += 20;
-	}
-
-	void callSomeone() {
-		if (mood < 30) {
-			cout << name << " is in a bad mood! Doesn't want to call anybody!\n";
-			return;
-		}
-		cout << "'Hi! " << name << " " << last_name << " is here!'\n";
-		energy -= 10;
-	}
-
-	void work() {
-		if (energy < 50) {
-			cout << name << " can't work! Too tired!\n";
-			return;
-		}
-		cout << name << " " << last_name << " is working here!\n";
-		energy -= 40;
-		mood -= 10;
-		hunger -= 30;
-	}
-
-	void printHuman() {
-		cout << "Name: " << name << endl;
-		cout << "height: " << height << endl;
-		cout << "last_name: " << last_name << endl;
-		cout << "eyes_color: " << eyes_color << endl;
-		cout << "Energy: " << energy << endl;
-		cout << "Hunger: " << hunger << endl;
-		cout << "Mood: " << mood << endl;
-		cout << "cleanliness: " << cleanliness << endl;
-	}
+    void Print() const
+    {
+        cout << "Date: " << day << "." << month << "." << year << endl;
+    }
 };
 
-int main() {
+class Student
+{
+    string name;
+    string surname;
+    DateTime birthday;
+    DateTime study_start;
+    int* hometask_rates = nullptr; // ПОЛЕ-ПОКАЖЧИК
+    int hometask_rates_count = 0;
+    int* practice_rates = nullptr;
+    int practice_rates_count = 0;
+    int* exam_rates = nullptr;
+    int exam_rates_count = 0;
+public:
+    Student()
+    {
+        SetName("Veronika");
+        SetSurname("Geyna");
+        SetBirthday({ 1,2,2005 });
+        SetStudyStart({ 1,2,2022 });
+    }
+    void printStudent()
+    {
+        cout << "Name: " << name << endl;
+        cout << "Surname: " << surname << endl;
+        cout << "Birthday: ";
+        birthday.Print();
+        cout << "Study start date";
+        study_start.Print();
+    }
+    // тiло КК для класу, яке створюе компiлятор за замовчуванням
+    // поверхневе копiювання
 
-	Human h;
-	h.printHuman();
+    // якщо в складi класу е поле-покажчик,
+    // то потрiбно ОБОВ'ЯЗКОВО зробити ЯВНИЙ конструктор копiювання
+    // в якому пiд усi поля-покажчики буде видiлена ОКРЕМА НОВА ДIЛЯНКА ПАМ'ЯТI
+    Student(const Student& original)
+    {
+        this->name = original.name;
+        this->surname = original.surname;
+        this->birthday = original.birthday;
+        this->study_start = original.study_start;
 
-	Human h1(167,"browm");
-	h1.printHuman();
+        // приклад ГЛИБОКОГО КОПIЮВАННЯ
+        this->hometask_rates_count = original.hometask_rates_count;
+
+        // для полiв-покажчикiв буде окремий код, який видiляе нову пам'ять!!!!
+        this->hometask_rates = new int[this->hometask_rates_count];
+        // мало видiлити пам'ть, ii потрiбно ще й проiнiцiалiзувати!!!
+        for (int i = 0; i < this->hometask_rates_count; i++)
+        {
+            this->hometask_rates[i] = original.hometask_rates[i];
+        }
+    }
+
+    ~Student()
+    {
+        if (hometask_rates != nullptr)
+        {
+            delete[] hometask_rates;
+            hometask_rates = nullptr;
+        }
+    }
+
+    void SetName(string name)
+    {
+        this->name = name;
+    }
+
+    string GetName() const
+    {
+        return name;
+    }
+
+private:
+    void SetBirthday(const DateTime& birthday)
+    {
+        this->birthday = birthday;
+    }
+
+public:
+    DateTime GetBirthday() const
+    {
+        return birthday;
+    }
+
+    void SetStudyStart(const DateTime& study_start)
+    {
+        this->study_start = study_start;
+    }
+    DateTime GetStudyStart() const
+    {
+        return study_start;
+    }
+
+    void SetSurname(string surname)
+    {
+        this->surname = surname;
+    }
+
+    string GetSurname() const
+    {
+        return surname;
+    }
+
+    void AddHometaskRate(unsigned int rate)
+    {
+        if (rate < 1  rate > 12)
+        {
+            cout << "Incorrect value for parameter rate. Value must be from 1 to 12\n";
+            throw "ERROR!";
+        }
+
+        if (hometask_rates_count == 0)
+        {
+            hometask_rates = new int[1];
+            hometask_rates[0] = rate;
+        }
+        else
+        {
+            int* temp = new int[hometask_rates_count + 1];
+            for (int i = 0; i < hometask_rates_count; i++)
+                temp[i] = hometask_rates[i];
+            temp[hometask_rates_count] = rate;
+            delete[] hometask_rates;
+            hometask_rates = temp;
+        }
+        hometask_rates_count++;
+    }
+
+    void PrintHometaskRates() const
+    {
+        cout << "Hometasks rates: ";
+        for (int i = 0; i < hometask_rates_count; i++)
+        {
+            cout << hometask_rates[i] << ", ";
+        }
+        cout << "\n";
+    }
+
+    int GetHometaskRateByIndex(unsigned int index)
+    {
+        if (index >= hometask_rates_count)
+        {
+            cout << "Incorrect index when accessing the evaluation array\n";
+            throw "ERROR!";
+        }
+        return hometask_rates[index];
+    }
+
+    int GetHometasksRatesCount() const
+    {
+        return hometask_rates_count;
+    }
+
+    void AddPracticRate(int rate)
+    {
+        if (rate < 1   rate > 12)
+        {
+            cout << "Incorrect value for parameter rate. Value must be from 1 to 12" << endl;
+            throw "ERROR!";
+        }
+
+        if (practice_rates_count == 0)
+        {
+            cout << "Add first rate!" << endl;
+            practice_rates = new int[1];
+            practice_rates[0] = rate;
+        }
+        else
+        {
+            cout << "Add yet another rate" << endl;
+            int* temp = new int[practice_rates_count + 1];
+            for (int i = 0; i < practice_rates_count; i++)
+            {
+                temp[i] = practice_rates[i];
+                temp[i + 1] = rate;
+            }
+            delete[] practice_rates;
+            practice_rates = temp;
+        }
+
+        practice_rates_count++;
+    }
+    int GetPracticeRateByIndex(unsigned int index)
+    {
+        if (index >= practice_rates_count)
+        {
+            cout << "Incorrect index when accessing the evaluation array\n";
+            throw "ERROR!";
+        }
+        return practice_rates[index];
+    }
+    int GetPracticetasksRatesCount() const
+    {
+        return practice_rates_count;
+    }
+
+    void AddExamRate(int rate)
+    {
+        if (rate < 1 || rate > 12)
+        {
+            cout << "Incorrect value for parameter rate. Value must be from 1 to 12" << endl;
+            throw "ERROR!";
+        }
+
+        if (exam_rates_count == 0)
+        {
+            cout << "Add first rate!" << endl;
+            exam_rates = new int[1];
+            exam_rates[0] = rate;
+        }
+        else
+        {
+            cout << "Add yet another rate" << endl;
+            int* temp = new int[exam_rates_count + 1];
+            for (int i = 0; i < exam_rates_count; i++)
+            {
+                temp[i] = exam_rates[i];
+                temp[i + 1] = rate;
+            }
+            delete[] exam_rates;
+            exam_rates = temp;
+        }
+
+        exam_rates_count++;
+    }
+
+
+    int GetExamtasksRatesCount() const
+    {
+        return exam_rates_count;
+    }
+    int GetExamRateByIndex(unsigned int index)
+    {
+        if (index >= exam_rates_count)
+        {
+            cout << "Incorrect index when accessing the evaluation array\n";
+            throw "ERROR!";
+        }
+        return exam_rates[index];
+    }
+    void PrintPracticeTaskRates() const
+    {
+        for (int i = 0; i < practice_rates_count; i++)
+        {
+            cout << practice_rates_count << ")" << practice_rates[i] << endl;
+        }
+    }
+};
+
+class Group
+{
+    Student* group;
+    int groupSize, courseN;
+    string groupName, specialty;
+public:
+    Group()
+    {
+        groupSize = 0;
+        courseN = 1;
+        groupName = "KN-0";
+        specialty = "Designer";
+        group = nullptr;
+    }
+    Group(int groupSize)
+    {
+        this->groupSize = groupSize;
+        courseN = 1;
+        groupName = "KN-0";
+        specialty = "Designer";
+        group = new Student[groupSize];
+    }
+    Group(const Group& obj)
+    {
+        this->group = new Student[obj.groupSize];
+        this->groupSize = obj.groupSize;
+        this->courseN = obj.courseN;
+        this->groupName = obj.groupName;
+        this->specialty = obj.specialty;
+        for (int i = 0; i < obj.groupSize; i++)
+            this->group[i] = obj.group[i];
+    }
+    void printGroup()
+    {
+        cout << "Group name: " << groupName << endl;
+        cout << "Specialty: " << specialty << endl;
+        int f;
+        Student temp;
+        for (int i = 1; i < groupSize; i++)
+        {
+            f = 0;
+            for (int r = 0; r < groupSize - i; r++)
+            {
+                if (group[r].GetSurname() > group[r + 1].GetSurname())
+                {
+                    temp = group[r];
+                    group[r] = group[r + 1];
+                    group[r + 1] = temp;
+                    f = 1;
+                }
+            }
+            if (f == 0)
+            {
+                break;
+            }
+        }
+        for (int i = 0; i < groupSize; i++)
+        {
+            cout << i + 1 << ' ' << group[i].GetSurname() << ' ' << group[i].GetName();
+            cout << endl;
+        }
+    }
+    int getGroupSize()
+    {
+        return groupSize;
+    }
+    Group AddStudent(Student new_student)
+    {
+        Group newGroup(groupSize + 1);
+        for (int i = 0; i < groupSize; i++)
+            newGroup.group[i] = group[i];
+        newGroup.group[groupSize].SetName(new_student.GetName());
+        newGroup.group[groupSize].SetSurname(new_student.GetSurname());
+        newGroup.group[groupSize].GetBirthday().SetDay(new_student.GetBirthday().GetDay());
+        newGroup.group[groupSize].GetBirthday().SetMonth(new_student.GetBirthday().GetMonth());
+        newGroup.group[groupSize].GetBirthday().SetYear(new_student.GetBirthday().GetYear());
+        newGroup.group[groupSize].GetStudyStart().SetDay(new_student.GetStudyStart().GetDay());
+        newGroup.group[groupSize].GetStudyStart().SetMonth(new_student.GetStudyStart().GetMonth());
+        newGroup.group[groupSize].GetStudyStart().SetYear(new_student.GetStudyStart().GetYear());
+        delete[]group;
+        /*group = new Student[++groupSize];
+        {
+            for (int i = 0; i < groupSize; i++)
+                group[i] = newGroup.group[i];
+        }
+        delete[]newGroup.group;*/
+        return newGroup;
+    }
+    Group MergeGroups(Group& group, Group& group2)
+    {
+        Group newGroup(group.groupSize + group2.groupSize);
+        for (int i = 0, j = 0; i < newGroup.groupSize; i++)
+        {
+            if (i < group.groupSize)
+                newGroup.group[i] = group.group[i];
+            else
+            {
+                newGroup.group[i] = group2.group[j];
+                j++;
+            }
+        }
+        delete[]group.group;
+        delete[]group2.group;
+        return newGroup;
+    }
+    void StudentTransfer(Group& group2, int student_index) // student with index 0 will be first
+    {
+        Group newGroup2(group2.groupSize + 1);
+        int i = 0;
+        for (; i < group2.groupSize; i++)
+            newGroup2.group[i] = group2.group[i];
+        newGroup2.group[i] = group[student_index - 1];
+        Group newGroup1(groupSize - 1);
+        for (int i = 0; i < groupSize; i++)
+        {
+            if (i < student_index - 1)
+                newGroup1.group[i] = group[i];
+            else if (i == student_index - 1)
+                continue;
+            else
+                newGroup1.group[i - 1] = group[i];
+        }
+        group = new Student[newGroup1.groupSize];
+        groupSize = newGroup1.groupSize;
+        for (int i = 0; i < groupSize; i++)
+            group[i] = newGroup1.group[i];
+        group2.group = new Student[newGroup2.groupSize];
+        group2.groupSize = newGroup2.groupSize;
+        for (int i = 0; i < groupSize; i++)
+            group2.group[i] = newGroup2.group[i];
+    }
+    Group DeleteFailedStudents()
+    {
+        int failedExams = 0, newSize = 0;
+        for (int i = 0; i < groupSize; i++)
+        {
+            if (!(group[i].GetExamRateByIndex(i) > 4))//pass-grade is 4
+                failedExams++;
+        }
+        newSize = failedExams;
+        Group newGroup(newSize);
+        for (int i = 0, j = 0; i < groupSize; i++)
+        {
+            if (group[i].GetExamRateByIndex(i))
+            {
+                newGroup.group[j] = group[i];
+                j++;
+            }
+        }
+        delete[]group;
+        return newGroup;
+    }
+    Group DeleteTheWorstStudent()
+    {
+        int worst = 0, tmp1 = 0, first = 0, index = 0;
+        Group newGroup = (groupSize - 1);
+        for (int i = 0; i < groupSize; i++)
+        {
+            int gradesCount = group[i].GetHometasksRatesCount();
+            for (int j = 0; j < gradesCount; i++)
+                tmp1 = group[i].GetHometaskRateByIndex(j);
+            if (gradesCount > 0 && first == 0)
+            {
+                worst = tmp1 / gradesCount;
+                index = i;
+            }
+            else if (gradesCount > 0 && first > 0)
+            {
+                worst = (tmp1 / gradesCount) < worst ? (tmp1 / gradesCount) : worst;
+                index = i;
+            }
+            tmp1 = 0;
+            first++;
+        }
+        for (int i = 0; i < groupSize; i++)
+        {
+            if (i < index)
+                newGroup.group[i] = group[i];
+            else if (i == index)
+                continue;
+            else
+                newGroup.group[i - 1] = group[i];
+        }
+        delete[]group;
+        return newGroup;
+    }
+};
+
+int main()
+{
+    Student original;
+    Group one, two, three;
+    /* "1 - Show students";
+     "2 - Add student to the group";
+     "3 - Merge two groups";
+      "4 - Transfer student to other group";
+     "5 - Delete all failed students";
+      "6 - Delete the worst student by homework grades"*/
+
+      //1
+    one.printGroup();
+    cout << endl;
+    //2
+    one = one.AddStudent(original);
+    one.printGroup();
+    cout << endl;
+
+    //3
+    two = two.AddStudent(original);
+    /*three = three.MergeGroups(one,two);*/
+    three.printGroup();
+    cout << endl;
+
+    //4
+    one.StudentTransfer(two, 1);
+    two.printGroup();
+    cout << endl;
+
 }
